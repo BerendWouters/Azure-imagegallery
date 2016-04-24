@@ -87,6 +87,9 @@ namespace ImageGallery.Controllers
                     container.SetPermissions(
                         new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
                     var blockBlob = container.GetBlockBlobReference(fileName);
+
+                    Directory.CreateDirectory(Server.MapPath("~/App_Data/Upload"));
+                     
                     var path = Path.Combine(Server.MapPath("~/App_Data/Upload/"), fileName);
                     file.SaveAs(path);
                     using (var fileStream = System.IO.File.OpenRead(path))
