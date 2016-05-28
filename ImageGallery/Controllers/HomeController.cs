@@ -9,6 +9,7 @@ using ImageGallery.Data;
 
 namespace ImageGallery.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private GalleryContext db = new GalleryContext();

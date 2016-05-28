@@ -1,12 +1,6 @@
 ﻿using System;
-using ImageGallery.Data;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Owin;
-using ImageGallery.Models;
 
 namespace ImageGallery
 {
@@ -39,9 +33,9 @@ namespace ImageGallery
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "250107517613",
+               appSecret: "a894a6f238a5279df4fae43dfdf06e95");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
