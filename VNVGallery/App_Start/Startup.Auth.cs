@@ -3,11 +3,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using System.Configuration;
 using Owin;
-using ImageGallery.Models;
 
-namespace ImageGallery
+namespace VNVGallery
 {
     public partial class Startup
     {
@@ -54,9 +52,9 @@ namespace ImageGallery
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: ConfigurationManager.AppSettings["FacebookAPPId"],
-               appSecret: ConfigurationManager.AppSettings["FacebookAPPSecret"]);
+            //app.UseFacebookAuthentication(
+            //   appId: "",
+            //   appSecret: "");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
