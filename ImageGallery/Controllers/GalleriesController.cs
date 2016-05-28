@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -11,9 +9,8 @@ using System.Web.Mvc;
 using ImageGallery.Data;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure; // Namespace for Azure Configuration Manager
-using Microsoft.WindowsAzure.Storage; // Namespace for Storage Client Library
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage
-using Microsoft.WindowsAzure.Storage.File; // Namespace for File storage
+using System.Configuration;
 
 namespace ImageGallery.Controllers
 {
@@ -21,13 +18,17 @@ namespace ImageGallery.Controllers
     {
         private GalleryContext db = new GalleryContext();
 
+
         // GET: Galleries
+        [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
             return View(await db.Galleries.ToListAsync());
         }
 
+
         // GET: Galleries/Details/5
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -79,7 +80,7 @@ namespace ImageGallery.Controllers
 
 
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                        CloudConfigurationManager.GetSetting("StorageConnectionString"));
+                        ConfigurationManager.AppSettings["StorageConnectionString"]);
                     var client = storageAccount.CreateCloudBlobClient();
                     var containerName = galleryName.Replace(" ", string.Empty).ToLowerInvariant();
                     CloudBlobContainer container = client.GetContainerReference(containerName);
