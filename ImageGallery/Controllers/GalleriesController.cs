@@ -10,6 +10,7 @@ using ImageGallery.Data;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure; // Namespace for Azure Configuration Manager
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage
+using System.Configuration;
 
 namespace ImageGallery.Controllers
 {
@@ -79,7 +80,7 @@ namespace ImageGallery.Controllers
 
 
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                        CloudConfigurationManager.GetSetting("StorageConnectionString"));
+                        ConfigurationManager.AppSettings["StorageConnectionString"]);
                     var client = storageAccount.CreateCloudBlobClient();
                     var containerName = galleryName.Replace(" ", string.Empty).ToLowerInvariant();
                     CloudBlobContainer container = client.GetContainerReference(containerName);
