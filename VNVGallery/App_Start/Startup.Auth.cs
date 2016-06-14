@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
 using Owin;
+using VnVGallery.Models;
 
-namespace VNVGallery
+namespace VnVGallery
 {
     public partial class Startup
     {
@@ -52,9 +55,9 @@ namespace VNVGallery
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: ConfigurationManager.AppSettings["FacebookAPPId"],
+               appSecret: ConfigurationManager.AppSettings["FacebookAPPSecret"]);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

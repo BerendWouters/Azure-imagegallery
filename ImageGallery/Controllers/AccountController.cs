@@ -29,7 +29,7 @@ namespace ImageGallery.Controllers
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? Request.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set 
             { 
@@ -41,7 +41,7 @@ namespace ImageGallery.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(VNVGallery.Startup))]
-namespace VNVGallery
+[assembly: OwinStartupAttribute(typeof(VnVGallery.Startup))]
+namespace VnVGallery
 {
     public partial class Startup
     {

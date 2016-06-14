@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VNVGallery")]
+[assembly: AssemblyTitle("VnVGallery")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VNVGallery")]
+[assembly: AssemblyProduct("VnVGallery")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2726489c-fd25-4f51-9b5b-236914424f67")]
+[assembly: Guid("e7434579-6c9b-4613-8be9-83c52661a193")]
 
 // Version information for an assembly consists of the following four values:
 //
