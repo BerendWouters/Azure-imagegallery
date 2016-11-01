@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="container">
-    <div id="logo_top"><img src="@Url.Content("~/Content/images/logo.png")" class="logo" alt="Logo"/>
+    <div id="logo_top"><a href ="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Content/images/logo.png")" class="logo" alt="Logo"/></a>
     </div>
     <div id="back_to_index">
         <p>This is my photogallery. You are free to download and edit them, all under the <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Common Licence</a>.
@@ -20,7 +20,7 @@
             <div id="footer_left">
                 <div id="footer_sitemap">
                     <ul>
-                        <li><a href="http://images.visionsandviews.net" title="Gallery Index">Gallery index</a></li>
+                        <li><a href="@Url.Action("Index", "Home")" title="Gallery Index">Gallery index</a></li>
                         <li><a href="http://www.visionsandviews.net" title="Blog">Blog</a></li>
                     </ul>
                 </div>

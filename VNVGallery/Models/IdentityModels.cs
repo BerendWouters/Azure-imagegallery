@@ -29,5 +29,7 @@ namespace VnVGallery.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<VnVGallery.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

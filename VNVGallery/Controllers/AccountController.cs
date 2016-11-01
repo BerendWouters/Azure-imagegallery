@@ -61,6 +61,12 @@ namespace VnVGallery.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
