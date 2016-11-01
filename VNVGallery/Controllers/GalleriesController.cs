@@ -126,6 +126,10 @@ namespace VnVGallery.Controllers
             {
                 return HttpNotFound();
             }
+            if (gallery.OwnerId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View(gallery);
         }
 
@@ -139,6 +143,10 @@ namespace VnVGallery.Controllers
             if (ModelState.IsValid)
             {
                 var dbGallery = db.Galleries.FindAsync(gallery.Id).Result;
+                if (dbGallery.OwnerId != User.Identity.GetUserId())
+                {
+                    return RedirectToAction("Login", "Account");
+                }
                 var galleryPhotos = dbGallery.Photos.ToList();
                 var fileDetails = UploadFiles(dbGallery.Name);
                 galleryPhotos.AddRange(fileDetails);
