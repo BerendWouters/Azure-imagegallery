@@ -208,3 +208,4 @@ FakesAssemblies/
 *.orig
 *.zip
 ImageGallery/App_Data/Upload/
+*.ncrunchsolution
