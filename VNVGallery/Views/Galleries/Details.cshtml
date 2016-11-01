@@ -10,3 +10,10 @@
 <img src='@Url.Content(item.BlobUri)' class='lazy' alt='thumb1' /></a></div>
 <div class='image_album_name'><p>@item.FileName</p></div></div>
 }
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("img.lazy").lazyload({
+			event: "scrollstop"
+		});
+	});
+</script>
