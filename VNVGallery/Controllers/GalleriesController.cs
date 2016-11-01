@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Ionic.Zip;
 using Microsoft.AspNet.Identity;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -82,7 +83,6 @@ namespace VnVGallery.Controllers
                 {
                     var fileName = Path.GetFileName(file.FileName);
 
-
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                         ConfigurationManager.AppSettings["StorageConnectionString"]);
                     var client = storageAccount.CreateCloudBlobClient();
@@ -91,24 +91,57 @@ namespace VnVGallery.Controllers
                     container.CreateIfNotExists();
                     container.SetPermissions(
                         new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
-                    var blockBlob = container.GetBlockBlobReference(fileName);
+                    
 
                     Directory.CreateDirectory(Server.MapPath("~/App_Data/Upload"));
                      
                     var path = Path.Combine(Server.MapPath("~/App_Data/Upload/"), fileName);
                     file.SaveAs(path);
-                    using (var fileStream = System.IO.File.OpenRead(path))
+                    var extension = Path.GetExtension(file.FileName);
+                    if (extension != null && extension.ToLowerInvariant().Equals(".zip"))
                     {
-                        blockBlob.UploadFromStream(fileStream);
-                    }
+                        var zip = new ZipFile(path);
+                        var zipExtrationPath = path.Replace(extension, "");
 
-                    FileDetail fileDetail = new FileDetail()
+                        Directory.CreateDirectory(zipExtrationPath);
+                        zip.ExtractAll(zipExtrationPath, ExtractExistingFileAction.OverwriteSilently);
+                        var extractedFiles = Directory.GetFiles(zipExtrationPath);
+                        foreach (var extractedFile in extractedFiles)
+                        {
+                            var blockBlob = container.GetBlockBlobReference(extractedFile);
+                            using (var fileStream = System.IO.File.OpenRead(extractedFile))
+                            {
+                                blockBlob.UploadFromStream(fileStream);
+                            }
+
+                            FileDetail fileDetail = new FileDetail()
+                            {
+                                BlobUri = blockBlob.Uri.ToString(),
+                                FileName = Path.GetFileName(extractedFile),
+                                Extension = Path.GetExtension(extractedFile)
+                            };
+                            fileDetails.Add(fileDetail);
+                        }
+                        Directory.Delete(zipExtrationPath, true);
+                    }
+                    else
                     {
-                        BlobUri = blockBlob.Uri.ToString(),
-                        FileName = fileName,
-                        Extension = Path.GetExtension(fileName)
-                    };
-                    fileDetails.Add(fileDetail);
+                        var blockBlob = container.GetBlockBlobReference(fileName);
+                        using (var fileStream = System.IO.File.OpenRead(path))
+                        {
+                            blockBlob.UploadFromStream(fileStream);
+                        }
+
+                        FileDetail fileDetail = new FileDetail()
+                        {
+                            BlobUri = blockBlob.Uri.ToString(),
+                            FileName = fileName,
+                            Extension = Path.GetExtension(fileName)
+                        };
+                        fileDetails.Add(fileDetail);
+                    }
+                    
+                    System.IO.File.Delete(fileName);
                 }
             }
             return fileDetails;
