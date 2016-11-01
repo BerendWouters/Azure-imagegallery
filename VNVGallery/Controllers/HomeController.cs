@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VnVGallery.Data;
 
-namespace VNVGallery.Controllers
+namespace VnVGallery.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private GalleryContext db = new GalleryContext();
+
+        public async Task<ActionResult> Index()
         {
-            return View();
+            return View(await db.Galleries.ToListAsync());
         }
 
         public ActionResult About()

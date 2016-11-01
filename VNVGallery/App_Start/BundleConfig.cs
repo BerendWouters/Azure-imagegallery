@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace VNVGallery
+namespace VnVGallery
 {
     public class BundleConfig
     {
@@ -10,7 +10,8 @@ namespace VNVGallery
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
-
+            bundles.Add(new ScriptBundle("~/bundles/lightbox").Include(
+                "~/Scripts/lightbox-2.6.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
@@ -24,8 +25,13 @@ namespace VNVGallery
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/gallery.css",
+                      "~/Content/html5.css",
+                      "~/Content/jquery.lightbox-0.5.css",
+                      "~/Content/jquery-ui-1.8.9.custom.css",
+                      "~/Content/lightbox.css",
+                      "~/Content/lytebox.css",
+                      "~/Content/screen.css"));
         }
     }
 }

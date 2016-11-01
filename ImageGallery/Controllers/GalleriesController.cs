@@ -43,6 +43,7 @@ namespace ImageGallery.Controllers
             return View(gallery);
         }
 
+        [Authorize(Roles = "")]
         // GET: Galleries/Create
         public ActionResult Create()
         {
