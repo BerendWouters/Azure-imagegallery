@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using VnVGallery.Models;
 
 namespace VnVGallery.Data
 {
@@ -21,5 +22,8 @@ namespace VnVGallery.Data
                 return FileDetail.GetPlaceKitten();
             }
         }
+        public string OwnerId { get; set; }
+        [ForeignKey("OwnerId")]
+        public ApplicationUser Owner { get; set; }
     }
 }

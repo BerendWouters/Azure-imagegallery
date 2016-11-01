@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -29,5 +30,10 @@ namespace VnVGallery.Data
         public DbSet<FileDetail> FileDetails { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
         public DbSet<IdentityUser> Users { get; set; }
+
+        public static GalleryContext Create()
+        {
+            return new GalleryContext();
+        }
     }
 }

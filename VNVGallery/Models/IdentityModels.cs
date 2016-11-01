@@ -17,19 +17,4 @@ namespace VnVGallery.Models
             return userIdentity;
         }
     }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("GalleryConnection", throwIfV1Schema: false)
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-
-        public System.Data.Entity.DbSet<VnVGallery.Models.ApplicationUser> ApplicationUsers { get; set; }
-    }
 }

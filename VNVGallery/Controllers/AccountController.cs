@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using VnVGallery.Data;
 using VnVGallery.Models;
 
 namespace VnVGallery.Controllers
@@ -17,6 +19,7 @@ namespace VnVGallery.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private GalleryContext db = new GalleryContext();
 
         public AccountController()
         {
@@ -64,7 +67,15 @@ namespace VnVGallery.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var user = UserManager.Users.Single(c => c.Id == userId);
+                var galleries = db.Galleries.Where(x => x.OwnerId == userId);
+                var accountModel = AccountModel.Create(user, galleries);
+                return View(accountModel);
+            }
+            return RedirectToAction("Login");
         }
 
         //
@@ -487,5 +498,22 @@ namespace VnVGallery.Controllers
             }
         }
         #endregion
+    }
+
+    public class AccountModel
+    {
+        public static AccountModel Create(ApplicationUser user, IQueryable<Gallery> galleries)
+        {
+            return new AccountModel()
+            {
+                _user = user,
+                Galleries = galleries.ToList()
+            };
+        }
+
+        private ApplicationUser _user { get; set; }
+
+        public List<Gallery> Galleries { get; set; }
+        public string Email { get { return _user.Email; } }
     }
 }

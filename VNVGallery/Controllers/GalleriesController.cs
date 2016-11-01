@@ -10,6 +10,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure; // Namespace for Azure Configuration Manager
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage
 using System.Configuration;
+using Microsoft.AspNet.Identity;
 using VnVGallery.Data;
 
 namespace ImageGallery.Controllers
@@ -59,8 +60,10 @@ namespace ImageGallery.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();
                 var fileDetails = UploadFiles(gallery.Name);
                 gallery.Photos = fileDetails;
+                gallery.OwnerId = userId;
                 db.Galleries.Add(gallery);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
