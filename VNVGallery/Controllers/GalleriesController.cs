@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.Azure; // Namespace for Azure Configuration Manager
-using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage
-using System.Configuration;
 using Microsoft.AspNet.Identity;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using VnVGallery.Data;
 
-namespace ImageGallery.Controllers
+namespace VnVGallery.Controllers
 {
+    [Authorize]
     public class GalleriesController : Controller
     {
         private GalleryContext db = new GalleryContext();
@@ -44,7 +44,7 @@ namespace ImageGallery.Controllers
             return View(gallery);
         }
 
-        [Authorize(Roles = "")]
+        [Authorize]
         // GET: Galleries/Create
         public ActionResult Create()
         {

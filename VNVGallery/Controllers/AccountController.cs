@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -498,22 +497,5 @@ namespace VnVGallery.Controllers
             }
         }
         #endregion
-    }
-
-    public class AccountModel
-    {
-        public static AccountModel Create(ApplicationUser user, IQueryable<Gallery> galleries)
-        {
-            return new AccountModel()
-            {
-                _user = user,
-                Galleries = galleries.ToList()
-            };
-        }
-
-        private ApplicationUser _user { get; set; }
-
-        public List<Gallery> Galleries { get; set; }
-        public string Email { get { return _user.Email; } }
     }
 }
