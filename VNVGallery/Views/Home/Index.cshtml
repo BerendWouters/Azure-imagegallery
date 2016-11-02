@@ -6,7 +6,7 @@
     <div class='imagefield_album'>
     <div class='image'>
         <a href="@Url.Action("Details", "Galleries", new { item.Id})">
-            <img src='@Url.Content(item.RandomFile.BlobUri)' alt='Random image' />
+            <img src='@Url.Content(item.RandomFile.BlobUri)' width="180" alt='Random image' />
         </a></div>
         <div class='image_album_name'>
             <p>@Html.DisplayName(item.Name)<p></div>

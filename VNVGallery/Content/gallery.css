@@ -269,6 +269,7 @@ a:hover, a:active {
 }
 
 .image img{
+	width:180px;
 	margin: auto;
 	display:block;
 }
