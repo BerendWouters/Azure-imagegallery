@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.IO;
@@ -76,40 +77,61 @@ namespace VnVGallery.Controllers
         private List<FileDetail> UploadFiles(string galleryName)
         {
             List<FileDetail> fileDetails = new List<FileDetail>();
-            for (int i = 0; i < Request.Files.Count; i++)
+            try
             {
-                HttpPostedFileBase file = Request.Files[i];
-                if (file != null && file.ContentLength > 0)
+                for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-
-                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                        ConfigurationManager.AppSettings["StorageConnectionString"]);
-                    var client = storageAccount.CreateCloudBlobClient();
-                    var containerName = galleryName.Replace(" ", string.Empty).ToLowerInvariant();
-                    CloudBlobContainer container = client.GetContainerReference(containerName);
-                    container.CreateIfNotExists();
-                    container.SetPermissions(
-                        new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
-                    
-
-                    Directory.CreateDirectory(Server.MapPath("~/App_Data/Upload"));
-                     
-                    var path = Path.Combine(Server.MapPath("~/App_Data/Upload/"), fileName);
-                    file.SaveAs(path);
-                    var extension = Path.GetExtension(file.FileName);
-                    if (extension != null && extension.ToLowerInvariant().Equals(".zip"))
+                    HttpPostedFileBase file = Request.Files[i];
+                    if (file != null && file.ContentLength > 0)
                     {
-                        var zip = new ZipFile(path);
-                        var zipExtrationPath = path.Replace(extension, "");
+                        var fileName = Path.GetFileName(file.FileName);
 
-                        Directory.CreateDirectory(zipExtrationPath);
-                        zip.ExtractAll(zipExtrationPath, ExtractExistingFileAction.OverwriteSilently);
-                        var extractedFiles = Directory.GetFiles(zipExtrationPath);
-                        foreach (var extractedFile in extractedFiles)
+                        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                            ConfigurationManager.AppSettings["StorageConnectionString"]);
+                        var client = storageAccount.CreateCloudBlobClient();
+                        var containerName = galleryName.Replace(" ", string.Empty).ToLowerInvariant();
+                        CloudBlobContainer container = client.GetContainerReference(containerName);
+                        container.CreateIfNotExists();
+                        container.SetPermissions(
+                            new BlobContainerPermissions {PublicAccess = BlobContainerPublicAccessType.Blob});
+
+
+                        Directory.CreateDirectory(Server.MapPath("~/App_Data/Upload"));
+
+                        var path = Path.Combine(Server.MapPath("~/App_Data/Upload/"), fileName);
+                        file.SaveAs(path);
+                        var extension = Path.GetExtension(file.FileName);
+                        if (extension != null && extension.ToLowerInvariant().Equals(".zip"))
                         {
-                            var blockBlob = container.GetBlockBlobReference(extractedFile);
-                            using (var fileStream = System.IO.File.OpenRead(extractedFile))
+                            var zip = new ZipFile(path);
+                            var zipExtrationPath = path.Replace(extension, "");
+
+                            Directory.CreateDirectory(zipExtrationPath);
+                            zip.ExtractAll(zipExtrationPath, ExtractExistingFileAction.OverwriteSilently);
+                            var extractedFiles = Directory.GetFiles(zipExtrationPath);
+                            foreach (var extractedFile in extractedFiles)
+                            {
+                                var blockBlob = container.GetBlockBlobReference(extractedFile);
+                                using (var fileStream = System.IO.File.OpenRead(extractedFile))
+                                {
+                                    blockBlob.UploadFromStream(fileStream);
+                                }
+
+                                FileDetail fileDetail = new FileDetail()
+                                {
+                                    BlobUri = blockBlob.Uri.ToString(),
+                                    FileName = Path.GetFileName(extractedFile),
+                                    Extension = Path.GetExtension(extractedFile)
+                                };
+                                fileDetails.Add(fileDetail);
+                            }
+                            zip.Dispose();
+                            Directory.Delete(zipExtrationPath, true);
+                        }
+                        else
+                        {
+                            var blockBlob = container.GetBlockBlobReference(fileName);
+                            using (var fileStream = System.IO.File.OpenRead(path))
                             {
                                 blockBlob.UploadFromStream(fileStream);
                             }
@@ -117,34 +139,21 @@ namespace VnVGallery.Controllers
                             FileDetail fileDetail = new FileDetail()
                             {
                                 BlobUri = blockBlob.Uri.ToString(),
-                                FileName = Path.GetFileName(extractedFile),
-                                Extension = Path.GetExtension(extractedFile)
+                                FileName = fileName,
+                                Extension = Path.GetExtension(fileName)
                             };
                             fileDetails.Add(fileDetail);
                         }
-                        zip.Dispose();
-                        Directory.Delete(zipExtrationPath, true);
-                    }
-                    else
-                    {
-                        var blockBlob = container.GetBlockBlobReference(fileName);
-                        using (var fileStream = System.IO.File.OpenRead(path))
-                        {
-                            blockBlob.UploadFromStream(fileStream);
-                        }
 
-                        FileDetail fileDetail = new FileDetail()
-                        {
-                            BlobUri = blockBlob.Uri.ToString(),
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName)
-                        };
-                        fileDetails.Add(fileDetail);
+                        System.IO.File.Delete(path);
                     }
-                    
-                    System.IO.File.Delete(path);
                 }
             }
+            catch (Exception ex)
+            {
+                throw new FileUploadException(ex);
+            }
+            
             return fileDetails;
         }
 
@@ -225,5 +234,15 @@ namespace VnVGallery.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    internal class FileUploadException : Exception
+    {
+        public FileUploadException(Exception exception)
+        {
+            Exception = exception;
+        }
+
+        public Exception Exception { get; set; }
     }
 }
