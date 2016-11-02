@@ -122,6 +122,7 @@ namespace VnVGallery.Controllers
                             };
                             fileDetails.Add(fileDetail);
                         }
+                        zip.Dispose();
                         Directory.Delete(zipExtrationPath, true);
                     }
                     else
@@ -141,7 +142,7 @@ namespace VnVGallery.Controllers
                         fileDetails.Add(fileDetail);
                     }
                     
-                    System.IO.File.Delete(fileName);
+                    System.IO.File.Delete(path);
                 }
             }
             return fileDetails;
