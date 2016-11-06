@@ -13,7 +13,7 @@ namespace VnVGallery
             bundles.Add(new ScriptBundle("~/bundles/lightbox").Include(
                 "~/Scripts/lightbox.js"));
             bundles.Add(new ScriptBundle("~/bundles/lazyload").Include(
-                "~/Scripts/jquery.lazyload.js", "~/Scripts/jquery.scrollstop.js"));
+                "~/Scripts/lazyload/*"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
