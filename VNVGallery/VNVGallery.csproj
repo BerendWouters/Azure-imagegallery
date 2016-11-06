@@ -280,12 +280,14 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.lazyload.js" />
-    <Content Include="Scripts\jquery.scrollstop.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lazyload\lazyload.js" />
+    <Content Include="Scripts\lazyload\lazyload.min.js" />
+    <Content Include="Scripts\lazyload\vanilla-lazyload.js" />
+    <Content Include="Scripts\lazyload\vanilla-lazyload.min.js" />
     <Content Include="Scripts\lightbox.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
@@ -333,6 +335,8 @@
     <Content Include="Views\Galleries\Edit.cshtml" />
     <Content Include="Views\Galleries\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Scripts\lazyload\lazyload.min.js.map" />
+    <Content Include="Scripts\lazyload\vanilla-lazyload.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
