@@ -1,10 +1,21 @@
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
 using System;
-
+using System.Configuration;
+using System.Data.Entity;
+using System.Web;
 using Unity;
+using Unity.AspNet.Mvc;
+using Unity.Injection;
+using Unity.Lifetime;
+using VnVGallery.Data;
+using VnVGallery.Models;
 using VnVGallery.Service;
 
 namespace VnVGallery
 {
+    ///https://github.com/trailmax/IoCIdentitySample/blob/Part1/IoCIdentity/App_Start/UnityConfig.cs
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -40,6 +51,18 @@ namespace VnVGallery
             // NOTE: To load from web.config uncomment the line below.
             // Make sure to add a Unity.Configuration to the using statements.
             // container.LoadConfiguration();
+
+            container.RegisterType<GalleryContext>(new InjectionConstructor(ConfigurationManager.ConnectionStrings["GalleryConnection"].ConnectionString));
+            container.RegisterType<ApplicationSignInManager>();
+            container.RegisterType<ApplicationUserManager>();
+            container.RegisterType<EmailService>();
+
+            container.RegisterType<IAuthenticationManager>(
+                new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
+
+            container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(
+                new InjectionConstructor(typeof(GalleryContext)));
+
 
             // TODO: Register your type's mappings here.
             container.RegisterType<IZipArchiveProcessingService, ZipArchiveProcessingService>();
