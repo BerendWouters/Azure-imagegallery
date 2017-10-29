@@ -15,6 +15,7 @@ using VnVGallery.Service;
 
 namespace VnVGallery
 {
+    ///https://github.com/trailmax/IoCIdentitySample/blob/Part1/IoCIdentity/App_Start/UnityConfig.cs
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
