@@ -13,20 +13,27 @@ using Microsoft.AspNet.Identity;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using VnVGallery.Data;
+using System.Web.Hosting;
+using VnVGallery.Service;
 
 namespace VnVGallery.Controllers
 {
     [Authorize]
     public class GalleriesController : Controller
     {
-        private GalleryContext db = new GalleryContext();
-
+        private readonly IZipArchiveProcessingService _zipFileHander;
+        private GalleryContext _db;
+        public GalleriesController(IZipArchiveProcessingService zipFileHander)
+        {
+            _db = new GalleryContext();
+            _zipFileHander = zipFileHander;
+        }
 
         // GET: Galleries
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            return View(await db.Galleries.ToListAsync());
+            return View(await _db.Galleries.ToListAsync());
         }
 
 
@@ -38,7 +45,7 @@ namespace VnVGallery.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Gallery gallery = await db.Galleries.FindAsync(id);
+            Gallery gallery = await _db.Galleries.FindAsync(id);
             if (gallery == null)
             {
                 return HttpNotFound();
@@ -63,11 +70,12 @@ namespace VnVGallery.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
+                
                 var fileDetails = UploadFiles(gallery.Name);
                 gallery.Photos = fileDetails;
                 gallery.OwnerId = userId;
-                db.Galleries.Add(gallery);
-                await db.SaveChangesAsync();
+                _db.Galleries.Add(gallery);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -103,30 +111,7 @@ namespace VnVGallery.Controllers
                         var extension = Path.GetExtension(file.FileName);
                         if (extension != null && extension.ToLowerInvariant().Equals(".zip"))
                         {
-                            var zip = new ZipFile(path);
-                            var zipExtrationPath = path.Replace(extension, "");
-
-                            Directory.CreateDirectory(zipExtrationPath);
-                            zip.ExtractAll(zipExtrationPath, ExtractExistingFileAction.OverwriteSilently);
-                            var extractedFiles = Directory.GetFiles(zipExtrationPath);
-                            foreach (var extractedFile in extractedFiles)
-                            {
-                                var blockBlob = container.GetBlockBlobReference(extractedFile);
-                                using (var fileStream = System.IO.File.OpenRead(extractedFile))
-                                {
-                                    blockBlob.UploadFromStream(fileStream);
-                                }
-
-                                FileDetail fileDetail = new FileDetail()
-                                {
-                                    BlobUri = blockBlob.Uri.ToString(),
-                                    FileName = Path.GetFileName(extractedFile),
-                                    Extension = Path.GetExtension(extractedFile)
-                                };
-                                fileDetails.Add(fileDetail);
-                            }
-                            zip.Dispose();
-                            Directory.Delete(zipExtrationPath, true);
+                            fileDetails.AddRange(_zipFileHander.ProcessFiles(container, path));
                         }
                         else
                         {
@@ -164,7 +149,7 @@ namespace VnVGallery.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Gallery gallery = await db.Galleries.FindAsync(id);
+            Gallery gallery = await _db.Galleries.FindAsync(id);
             if (gallery == null)
             {
                 return HttpNotFound();
@@ -185,7 +170,7 @@ namespace VnVGallery.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbGallery = db.Galleries.FindAsync(gallery.Id).Result;
+                var dbGallery = _db.Galleries.FindAsync(gallery.Id).Result;
                 if (dbGallery.OwnerId != User.Identity.GetUserId())
                 {
                     return RedirectToAction("Login", "Account");
@@ -194,7 +179,7 @@ namespace VnVGallery.Controllers
                 var fileDetails = UploadFiles(dbGallery.Name);
                 galleryPhotos.AddRange(fileDetails);
                 dbGallery.Photos = galleryPhotos;
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(gallery);
@@ -207,7 +192,7 @@ namespace VnVGallery.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Gallery gallery = await db.Galleries.FindAsync(id);
+            Gallery gallery = await _db.Galleries.FindAsync(id);
             if (gallery == null)
             {
                 return HttpNotFound();
@@ -220,9 +205,9 @@ namespace VnVGallery.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Gallery gallery = await db.Galleries.FindAsync(id);
-            db.Galleries.Remove(gallery);
-            await db.SaveChangesAsync();
+            Gallery gallery = await _db.Galleries.FindAsync(id);
+            _db.Galleries.Remove(gallery);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -230,7 +215,7 @@ namespace VnVGallery.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
