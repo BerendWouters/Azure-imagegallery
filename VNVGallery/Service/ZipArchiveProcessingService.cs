@@ -22,7 +22,7 @@ namespace VnVGallery.Service
             var extractedFiles = Directory.GetFiles(zipExtrationPath);
             foreach (var extractedFile in extractedFiles)
             {
-                var blockBlob = container.GetBlockBlobReference(extractedFile);
+                var blockBlob = container.GetBlockBlobReference(Path.GetFileName(extractedFile));
                 using (var fileStream = File.OpenRead(extractedFile))
                 {
                     blockBlob.UploadFromStream(fileStream);
