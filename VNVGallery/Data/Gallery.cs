@@ -19,7 +19,7 @@ namespace VnVGallery.Data
                 var rand = new Random();
                 if(Photos.Count > 0)
                     return Photos.ElementAt(rand.Next(Photos.Count()));
-                return FileDetail.GetPlaceKitten();
+                return FileDetail.GetPlaceHolder();
             }
         }
         public string OwnerId { get; set; }

@@ -7,10 +7,17 @@
     <p>@Model.Email</p>
     <a href="@Url.Action("Create", "Galleries")">Create a new gallery</a>
     <h2>Galleries</h2>
-    <ul>
-        @foreach (var modelGallery in Model.Galleries)
-        {
-            <li><a href="@Url.Action("Edit", "Galleries", new { modelGallery.Id})">@modelGallery.Name</a></li>
-        }
-    </ul>
+    @foreach (var modelGallery in Model.Galleries)
+    {
+        <div class='imagefield_album'>
+            <div class='image'>
+                <a href="@Url.Action("Edit", "Galleries", new { modelGallery.Id})">
+                    <img src='@Url.Content(modelGallery.RandomFile.BlobUri)' width="180" alt='Random image' />
+                </a>
+            </div>
+            <div class='image_album_name'>
+                <p>@Html.DisplayName(modelGallery.Name)<p>
+            </div>
+        </div>
+    }
 </div>

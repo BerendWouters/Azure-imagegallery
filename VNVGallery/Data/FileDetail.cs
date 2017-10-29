@@ -12,11 +12,11 @@ namespace VnVGallery.Data
 
         public string BlobUri { get; set; }
 
-        public static FileDetail GetPlaceKitten()
+        public static FileDetail GetPlaceHolder()
         {
             return new FileDetail()
             {
-                BlobUri = "https://placekitten.com/200/300"
+                BlobUri = "http://via.placeholder.com/200x300"
             };
         }
     }
