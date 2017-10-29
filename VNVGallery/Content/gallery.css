@@ -257,7 +257,7 @@ a:hover, a:active {
 	padding:20px 0px 0px 0px;
 }
 .image {
-	height:160px;
+	max-height:160px;
 	width:180px;
 	float:left;
 	border-radius:10px;
