@@ -7,15 +7,21 @@ import { AppComponent } from './app.component';
 import { ListGalleriesComponent } from './components/list-galleries/list-galleries.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import  { MatCardModule, MatButtonModule } from '@angular/material';
+import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    ListGalleriesComponent
+    ListGalleriesComponent,
+    GalleryContentComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    MatCardModule,
+    MatButtonModule,
     AppRoutingModule
   ],
   providers: [],

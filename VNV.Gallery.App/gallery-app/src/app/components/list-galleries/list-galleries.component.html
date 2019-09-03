@@ -1,3 +1,6 @@
-<p>
-  list-galleries works!
-</p>
+<div class="container">
+  <mat-card *ngFor="let container of containerNames">
+    <mat-card-title>{{ container.name }}</mat-card-title>
+    <mat-card-actions><button mat-raised-button color="primary" (click)="openContainer(container.name)">Open</button></mat-card-actions>
+  </mat-card>
+</div>
