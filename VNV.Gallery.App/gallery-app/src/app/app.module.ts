@@ -7,8 +7,9 @@ import { AppComponent } from './app.component';
 import { ListGalleriesComponent } from './components/list-galleries/list-galleries.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import  { MatCardModule, MatButtonModule } from '@angular/material';
+import { MatCardModule, MatButtonModule } from '@angular/material';
 import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pipe';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pip
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
