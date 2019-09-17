@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AnonymousCredential, StorageURL, ServiceURL, Aborter, ContainerURL } from '@azure/storage-blob';
+import { AnonymousCredential, StorageURL, ServiceURL, Aborter, ContainerURL, IServiceListContainersSegmentOptions } from '@azure/storage-blob';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +28,16 @@ export class BlobService {
     pipeline
   );
 
-
     let marker: string;
     const containerNames = [];
+    const options =  {
+      prefix: 'gallery-'
+    } as IServiceListContainersSegmentOptions;
     do {
       const listContainersResponse = await serviceURL.listContainersSegment(
         Aborter.none,
-        marker
+        marker,
+        options
       );
 
       marker = listContainersResponse.nextMarker;
