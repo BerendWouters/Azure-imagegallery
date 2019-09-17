@@ -19,5 +19,5 @@ steps:
     npm install -g @angular/cli
     npm install
     npm run build
-  workingDirectory: $(Agent.WorkFolder)/VNV.Gallery.App/gallery-app
+  workingDirectory: $(Agent.BuildDirectory)/VNV.Gallery.App/gallery-app
   displayName: 'npm install and build'
