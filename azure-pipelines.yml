@@ -21,3 +21,9 @@ steps:
     npm run build
   workingDirectory: $(Build.SourcesDirectory)/VNV.Gallery.App/gallery-app
   displayName: 'npm install and build'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/VNV.Gallery.App/gallery-app/dist'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
