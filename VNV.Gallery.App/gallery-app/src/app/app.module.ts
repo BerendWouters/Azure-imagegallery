@@ -10,12 +10,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule, MatButtonModule } from '@angular/material';
 import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListGalleriesComponent,
-    GalleryContentComponent
+    GalleryContentComponent,
+    SanitizedContainerNamePipe
   ],
   imports: [
     BrowserModule,
