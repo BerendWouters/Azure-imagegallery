@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BlobService as BlobService } from 'src/app/services/blob.service';
+import { BlobService } from 'src/app/services/blob.service';
 import { Router } from '@angular/router';
+import { GalleryContainer } from '../../models/gallery-container.model';
 
 @Component({
   selector: 'app-list-galleries',
@@ -8,29 +9,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-galleries.component.scss']
 })
 export class ListGalleriesComponent implements OnInit {
-
   containerNames = [];
-  constructor(private blobService: BlobService, private router: Router) { }
+  errorOccurred: boolean;
+  errorMessage: string;
+  constructor(private blobService: BlobService, private router: Router) {}
 
   ngOnInit() {
-    this.blobService.listContainer().then( (res) =>
-
-    {
+    this.blobService.error$.subscribe((res) => {
+      this.displayError(res);
+    })
+    this.blobService.listContainer().then(res => {
       this.containerNames = res.map(r => new GalleryContainer(r));
-    }
-    );
+    });
   }
 
-  openContainer(containerName: string){
+  openContainer(containerName: string) {
     this.router.navigateByUrl(containerName);
-    this.blobService.getBlobs(containerName).then((res) => console.log(res));
+    this.blobService.getBlobs(containerName).then(res => console.log(res));
   }
 
+  private displayError(error: string){
+    this.errorOccurred = true;
+    this.errorMessage = error;
+  }
 }
 
-export class GalleryContainer{
-  constructor(name: string) {
-    this.name = name;
-  }
-  name: string;
-}
+

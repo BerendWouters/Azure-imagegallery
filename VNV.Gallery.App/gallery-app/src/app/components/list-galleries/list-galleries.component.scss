@@ -4,7 +4,11 @@
   flex-wrap: wrap;
 }
 
-mat-card{
+mat-card:not(.error-card){
   width: 400px;
   margin:10px;
+}
+
+.error-card{
+  background-color: #e05555;
 }

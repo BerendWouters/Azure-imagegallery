@@ -1,54 +1,69 @@
-import { Injectable } from '@angular/core';
-import { AnonymousCredential, StorageURL, ServiceURL, Aborter, ContainerURL, IServiceListContainersSegmentOptions } from '@azure/storage-blob';
+import { Injectable } from "@angular/core";
+import {
+  AnonymousCredential,
+  StorageURL,
+  ServiceURL,
+  Aborter,
+  ContainerURL,
+  IServiceListContainersSegmentOptions
+} from "@azure/storage-blob";
+import { Subject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class BlobService {
-  account = 'storeparkings';
+  account = "storeparkings";
   // tslint:disable-next-line: max-line-length
-  accountSas = '?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2021-09-11T03:45:08Z&st=2019-09-10T19:45:08Z&spr=https&sig=gEGdyLWBjn2Ig%2FJ4EXz2%2FwZkNyIPxjIRbJ2a7ZmX1I4%3D';
+  accountSas =
+    "?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2021-09-11T03:45:08Z&st=2019-09-10T19:45:08Z&spr=https&sig=gEGdyLWBjn2Ig%2FJ4EXz2%2FwZkNyIPxjIRbJ2a7ZmX1I4%3D";
 
+  private errorSubject = new Subject<string>();
+  error$ = this.errorSubject.asObservable();
 
-  constructor() {
+  constructor() {}
 
-   }
-
-   async listContainer() {
-
-  // Use AnonymousCredential when url already includes a SAS signature
+  async listContainer() {
+    // Use AnonymousCredential when url already includes a SAS signature
     const anonymousCredential = new AnonymousCredential();
 
-  // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
+    // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
     const pipeline = StorageURL.newPipeline(anonymousCredential);
 
-  // List containers
+    // List containers
     const serviceURL = new ServiceURL(
-    `https://${this.account}.blob.core.windows.net${this.accountSas}`,
-    pipeline
-  );
+      `https://${this.account}.blob.core.windows.net${this.accountSas}`,
+      pipeline
+    );
 
     let marker: string;
     const containerNames = [];
-    const options =  {
+    const options = {
       prefix: 'gallery-'
     } as IServiceListContainersSegmentOptions;
     do {
-      const listContainersResponse = await serviceURL.listContainersSegment(
-        Aborter.none,
-        marker,
-        options
-      );
+      try {
+        console.log('Attempting to list containers');
+        const listContainersResponse = await serviceURL.listContainersSegment(
+          Aborter.none,
+          marker,
+          options
+        );
 
-      marker = listContainersResponse.nextMarker;
-      for (const container of listContainersResponse.containerItems) {
-        containerNames.push(container.name);
+        marker = listContainersResponse.nextMarker;
+        for (const container of listContainersResponse.containerItems) {
+          containerNames.push(container.name);
+        }
+      } catch (error) {
+        console.log(error);
+        this.errorSubject.next(error);
+        break;
       }
     } while (marker);
     return containerNames;
-   }
-   async getBlobs(containerName: string) {
-     // Use AnonymousCredential when url already includes a SAS signature
+  }
+  async getBlobs(containerName: string) {
+    // Use AnonymousCredential when url already includes a SAS signature
     const anonymousCredential = new AnonymousCredential();
 
     // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
@@ -61,7 +76,12 @@ export class BlobService {
     );
 
     const containerUrl = ContainerURL.fromServiceURL(serviceURL, containerName);
-    const metaData = await containerUrl.listBlobFlatSegment(Aborter.none);
-    return metaData.segment.blobItems;
-   }
+    try {
+      const metaData = await containerUrl.listBlobFlatSegment(Aborter.none);
+
+      return metaData.segment.blobItems;
+    } catch (error) {
+      this.errorSubject.next(error);
+    }
+  }
 }
