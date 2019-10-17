@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   AnonymousCredential,
   StorageURL,
@@ -6,17 +6,17 @@ import {
   Aborter,
   ContainerURL,
   IServiceListContainersSegmentOptions
-} from "@azure/storage-blob";
-import { Subject } from "rxjs";
+} from '@azure/storage-blob';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class BlobService {
-  account = "storeparkings";
+  account = 'storeparkings';
   // tslint:disable-next-line: max-line-length
   accountSas =
-    "?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2021-09-11T03:45:08Z&st=2019-09-10T19:45:08Z&spr=https&sig=gEGdyLWBjn2Ig%2FJ4EXz2%2FwZkNyIPxjIRbJ2a7ZmX1I4%3D";
+    '?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2021-09-11T03:45:08Z&st=2019-09-10T19:45:08Z&spr=https&sig=gEGdyLWBjn2Ig%2FJ4EXz2%2FwZkNyIPxjIRbJ2a7ZmX1I4%3D';
 
   private errorSubject = new Subject<string>();
   error$ = this.errorSubject.asObservable();
@@ -55,7 +55,6 @@ export class BlobService {
           containerNames.push(container.name);
         }
       } catch (error) {
-        console.log(error);
         this.errorSubject.next(error);
         break;
       }

@@ -9,18 +9,22 @@ import { GalleryContainer } from '../../models/gallery-container.model';
   styleUrls: ['./list-galleries.component.scss']
 })
 export class ListGalleriesComponent implements OnInit {
-  containerNames = [];
-  errorOccurred: boolean;
+  containerNames = [{name: 'dummy'} as GalleryContainer];
+  errorOccurred = false;
   errorMessage: string;
+  loading: boolean;
   constructor(private blobService: BlobService, private router: Router) {}
 
   ngOnInit() {
     this.blobService.error$.subscribe((res) => {
       this.displayError(res);
     })
+    this.loading = true;
     this.blobService.listContainer().then(res => {
       this.containerNames = res.map(r => new GalleryContainer(r));
+      this.loading = false;
     });
+
   }
 
   openContainer(containerName: string) {
