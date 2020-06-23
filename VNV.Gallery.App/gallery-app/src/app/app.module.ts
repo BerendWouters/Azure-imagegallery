@@ -7,7 +7,9 @@ import { AppComponent } from './app.component';
 import { ListGalleriesComponent } from './components/list-galleries/list-galleries.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import  { MatCardModule, MatButtonModule } from '@angular/material';
+import { MatCardModule } from  '@angular/material/card';
+import { MatButtonModule} from '@angular/material/button';
+
 import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
 
 @NgModule({
