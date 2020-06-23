@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BlobServiceClient } from '@azure/storage-blob';
-import { Image } from './Image';
+import { Image } from './image';
 
 @Injectable({
   providedIn: 'root'

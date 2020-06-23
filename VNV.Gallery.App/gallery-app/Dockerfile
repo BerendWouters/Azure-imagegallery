@@ -1,8 +1,11 @@
-FROM node:12.18-alpine as production
-ENV NODE_ENV production
+FROM node:12.18-alpine as build
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+COPY package.json package-lock.json ./
+RUN npm install
 COPY . .
-EXPOSE 3000
-CMD npm start
+RUN npm run build -- --prod --outputPath=./output
+
+
+FROM nginx:alpine as nginx
+
+COPY --from=build ./usr/src/app/output /usr/share/nginx/html
