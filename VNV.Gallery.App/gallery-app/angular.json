@@ -141,5 +141,8 @@
       }
     }
   },
-  "defaultProject": "gallery-app"
+  "defaultProject": "gallery-app",
+  "cli": {
+    "analytics": false
+  }
 }
