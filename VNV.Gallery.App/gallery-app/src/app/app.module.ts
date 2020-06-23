@@ -11,12 +11,15 @@ import { MatCardModule } from  '@angular/material/card';
 import { MatButtonModule} from '@angular/material/button';
 
 import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListGalleriesComponent,
-    GalleryContentComponent
+    GalleryContentComponent,
+    SanitizedContainerNamePipe
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import { GalleryContentComponent } from './components/gallery-content/gallery-co
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

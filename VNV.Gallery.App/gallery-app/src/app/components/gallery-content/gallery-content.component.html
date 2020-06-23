@@ -1,5 +1,5 @@
 <div class="container">
   <mat-card *ngFor="let image of images">
-    <mat-card-content><img src="https://{{accountName}}.blob.core.windows.net/{{gallery}}/{{image.name}}" /></mat-card-content>
+    <mat-card-content><img [lazyLoad]="getImage(image.name)" /></mat-card-content>
   </mat-card>
 </div>
