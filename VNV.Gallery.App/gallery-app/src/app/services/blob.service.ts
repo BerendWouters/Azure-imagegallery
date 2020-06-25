@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BlobServiceClient } from '@azure/storage-blob';
+import { BlobServiceClient, ServiceListContainersOptions } from '@azure/storage-blob';
 import { Image } from './image';
 
 @Injectable({
@@ -22,7 +22,10 @@ export class BlobService {
    async listContainer() {
 
     const containerNames = [];
-    for await (const container of this.blobServiceClient.listContainers()) {
+    const listContainerOptions: ServiceListContainersOptions ={
+      prefix: 'gallery-'
+    };
+    for await (const container of this.blobServiceClient.listContainers(listContainerOptions)) {
       containerNames.push(container.name);
     }
     return containerNames;
