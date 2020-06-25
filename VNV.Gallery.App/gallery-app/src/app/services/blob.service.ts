@@ -28,7 +28,7 @@ export class BlobService {
     for await (const container of this.blobServiceClient.listContainers(listContainerOptions)) {
       containerNames.push(container.name);
     }
-    return containerNames;
+    return containerNames.sort();
    }
    async getBlobs(containerName: string): Promise<Image[]>{
     const containerClient = this.blobServiceClient.getContainerClient(containerName);
