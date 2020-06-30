@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +15,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pipe';
 
 @NgModule({
-  declarations: [
+declarations: [
     AppComponent,
     ListGalleriesComponent,
     GalleryContentComponent,
@@ -27,10 +27,11 @@ import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pip
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
-    AppRoutingModule,
+    MatProgressBarModule,
+    AppRoutingModule,    
     LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

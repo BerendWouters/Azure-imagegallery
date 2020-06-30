@@ -2,9 +2,17 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0px auto;
+  .container-card:hover{
+    cursor: pointer;
+  }
 }
 
-mat-card{
+mat-card:not(.error-card){
   width: 400px;
   margin:10px;
+}
+
+.error-card{
+  background-color: #e05555;
 }
