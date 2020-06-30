@@ -19,11 +19,11 @@ steps:
     npm install -g @angular/cli
     npm install
     npm run build
-  workingDirectory: $(Build.SourcesDirectory)/VNV.Gallery.App/gallery-app
+  workingDirectory: $(Build.SourcesDirectory)/gallery-app
   displayName: 'npm install and build'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/VNV.Gallery.App/gallery-app/dist'
+    PathtoPublish: '$(Build.SourcesDirectory)/gallery-app/dist'
     ArtifactName: 'drop'
     publishLocation: 'Container'
