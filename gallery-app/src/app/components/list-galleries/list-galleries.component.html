@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-progress-bar mode="indeterminate" *ngIf="!loading"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <mat-card *ngIf="errorOccurred" class="error-card">
     <mat-card-title>An error has occurred</mat-card-title>
     <mat-card-content>{{ errorMessage }}</mat-card-content>
