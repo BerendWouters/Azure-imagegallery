@@ -20,10 +20,8 @@ export class GalleryContentComponent implements OnInit {
     const containerName = this.route.snapshot.paramMap.get('name');
     this.gallery = containerName;
     this.accountName = this.blobService.account;
-    this.blobService.getBlobs(containerName).then(res => {this.images = res;
-       console.log(res); });
+  this.blobService.getBlobs(containerName).then(res => {this.images = res; });
   }
-
   getImage(imageName: string): string {
     return `https://${this.accountName}.blob.core.windows.net/${this.gallery}/${imageName}`;
   }
