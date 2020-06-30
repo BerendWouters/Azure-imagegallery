@@ -7,11 +7,20 @@ import { AppComponent } from './app.component';
 import { ListGalleriesComponent } from './components/list-galleries/list-galleries.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatCardModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
+import { MatCardModule } from  '@angular/material/card';
+import { MatButtonModule} from '@angular/material/button';
+
 import { GalleryContentComponent } from './components/gallery-content/gallery-content.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { SanitizedContainerNamePipe } from './pipes/sanitized-container-name.pipe';
 
 @NgModule({
-  declarations: [AppComponent, ListGalleriesComponent, GalleryContentComponent],
+declarations: [
+    AppComponent,
+    ListGalleriesComponent,
+    GalleryContentComponent,
+    SanitizedContainerNamePipe
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -19,7 +28,8 @@ import { GalleryContentComponent } from './components/gallery-content/gallery-co
     MatCardModule,
     MatButtonModule,
     MatProgressBarModule,
-    AppRoutingModule
+    AppRoutingModule,    
+    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

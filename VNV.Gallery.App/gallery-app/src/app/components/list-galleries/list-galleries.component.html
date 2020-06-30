@@ -5,8 +5,9 @@
     <mat-card-content>{{ errorMessage }}</mat-card-content>
   </mat-card>
   <div *ngIf="!errorOccurred">
-      <mat-card *ngFor="let container of containerNames" (click)="openContainer(container.name)" class="container-card">
-          <mat-card-title>{{ container.name }}</mat-card-title>
+      <mat-card *ngFor="let container of containerNames">
+    <mat-card-title>{{ container.name | sanitizedContainerName }}</mat-card-title>
+    <mat-card-actions><button mat-raised-button color="primary" (click)="openContainer(container.name)">Open</button></mat-card-actions>
         </mat-card>
   </div>
 </div>

@@ -23,13 +23,12 @@ export class ListGalleriesComponent implements OnInit {
     this.blobService.listContainer().then(res => {
       this.containerNames = res.map(r => new GalleryContainer(r));
       this.loading = false;
-    });
-
+    }
+    );
   }
 
   openContainer(containerName: string) {
     this.router.navigateByUrl(containerName);
-    this.blobService.getBlobs(containerName).then(res => console.log(res));
   }
 
   private displayError(error: string){

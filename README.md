@@ -1,5 +1,5 @@
 # Azure-imagegallery
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ttkr8othkjjcoqb4/branch/master?svg=true)](https://ci.appveyor.com/project/BerendWouters/azure-imagegallery/branch/master)
+[![Build Status](https://dev.azure.com/berendwouters/Gallery/_apis/build/status/BerendWouters.Azure-imagegallery?branchName=master)](https://dev.azure.com/berendwouters/Gallery/_build/latest?definitionId=26&branchName=master)
 
-This image gallery is a C# MVC project using Azure Blobstorage to store the files
+This is the 42nd attempt to have an image gallery. This time, I'm using node.js to run a static website in a storage account.
