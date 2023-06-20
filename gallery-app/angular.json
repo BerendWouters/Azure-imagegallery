@@ -140,6 +140,7 @@
       }
     }
   },
+  "defaultProject": "gallery-app",
   "cli": {
     "analytics": false
   }
