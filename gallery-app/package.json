@@ -17,6 +17,7 @@
     "@angular/platform-browser": "^11.2.14",
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/router": "^11.2.14",
+    "@angular/material": "^10.2.7",
     "@azure/storage-blob": "^12.1.2",
     "core-js": "^3.6.5",
     "ng-lazyload-image": "^8.0.1",
