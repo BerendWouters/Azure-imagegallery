@@ -209,3 +209,4 @@ FakesAssemblies/
 *.zip
 ImageGallery/App_Data/Upload/
 *.ncrunchsolution
+**/.angular/cache/*
